@@ -1,28 +1,25 @@
 .App {
   text-align: center;
+  background-color: #080808
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.Stocks {
+  display: inline-grid;
+  background-color: #2196F3;
+  padding: 10px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
+.StockRow {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #2196F3;
+  padding: 2px;
+}
+
+.StockCell {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  font-size: 30px;
+  text-align: center;  
 }

@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="Stocks">
+        <Stock symbol="0002.HK" name="CLP" price="86.1"/>
+        <Stock symbol="0005.HK" name="HSBC" price="76.8"/>
+      </div>
+    );
+  }
+}
+
+class Stock extends Component {
+  render() {
+    return (
+      <div className="StockRow">
+        <div className="StockCell">{this.props.symbol}</div>
+        <div className="StockCell">{this.props.name}</div>
+        <div className="StockCell">{this.props.price}</div>
       </div>
     );
   }
