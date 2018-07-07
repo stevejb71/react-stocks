@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { getTimeSeries, latestClose } from  './Alphavantage';
+import { TextBox } from './TextBox';
 const { Map } = require('immutable');
 
 type AppState = {
@@ -34,7 +35,7 @@ class App extends Component<{}, AppState> {
     return (
       <div>
         <div>
-          <ApiKey value={this.state.apiKey} onChange={this.onApiKeyChange}/>
+          <TextBox value={this.state.apiKey} onChange={this.onApiKeyChange}/>
         </div>
         <div className="Stocks">
           <Stock symbol="0002.HK" name="CLP" price={this.state.prices.get("0002.HK")}/>
@@ -49,23 +50,6 @@ type StockProps = {
   symbol: string,
   name: string,
   price: number,
-}
-
-class ApiKey extends Component<{value: string, onChange: string => void}, void> { 
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  render() {
-    return (
-      <input type="text" value={this.props.value} onChange={this.handleChange}/>
-    )
-  }
-
-  handleChange = (event) => {
-    this.props.onChange(event.target.value);
-  }
 }
 
 class Stock extends Component<StockProps> {
