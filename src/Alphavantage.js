@@ -26,7 +26,7 @@ export const getTimeSeries = (apiKey: string, symbol: string, dataHandler: numbe
   axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=${apiKey}`).then(handler)
 }
 
-export const latestClose = (handler: number => void) => (response: any) => {  
+export const latestClose = (handler: number => void) => (response: any) => {
   const timeSeries = Object.entries(response.data['Time Series (1min)']);
   const latestEntry = timeSeries[timeSeries.length - 1];
   const latestValue: any = latestEntry[1];

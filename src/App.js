@@ -4,12 +4,26 @@ import React, { Component } from 'react';
 import './App.css';
 import { getTimeSeries, latestClose } from  './Alphavantage';
 
-class App extends Component<any, any> {
+type AppState = {
+  apiKey: string
+}
+
+class App extends Component<{}, AppState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {apiKey: ""};
+  }
+
   render() {
     return (
-      <div className="Stocks">
-        <Stock symbol="0002.HK" name="CLP" price="86.1"/>
-        <Stock symbol="0005.HK" name="HSBC" price="76.8"/>
+      <div>
+        <div>
+          <ApiKey value=""/>
+        </div>
+        <div className="Stocks">
+          <Stock symbol="0002.HK" name="CLP"/>
+          <Stock symbol="0005.HK" name="HSBC"/>
+        </div>
       </div>
     );
   }
@@ -17,11 +31,30 @@ class App extends Component<any, any> {
 
 type StockProps = {
   symbol: string,
-  name: string
+  name: string,
 }
 
 type StockState = {
   price: number,
+}
+
+class ApiKey extends Component<{value: string}, {value: string}> { 
+  constructor(props) {
+    super(props);
+    this.state = {value: props.value};
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  render() {
+    return (
+      <input type="text" value={this.state.value} onChange={this.handleChange}/>
+    )
+  }
+
+  handleChange = (event) => {
+    this.setState({value: event.target.value});
+    event.preventDefault();
+  }
 }
 
 class Stock extends Component<StockProps, StockState> {
