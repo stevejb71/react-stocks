@@ -11,7 +11,7 @@ const hasKey = (data: any, key: string): bool => {
   }
 }
 
-export const getTimeSeries = (apiKey: string, symbol: string, dataHandler: number => void, onError: (number, string) => void) => {
+export const getTimeSeries = (apiKey: string, symbol: string, dataHandler: {data: any} => void, onError: (number, string) => void) => {
   const handler = (response) => {
     if(response.status !== 200) {
       onError(response.status, response.statusText)
@@ -23,10 +23,11 @@ export const getTimeSeries = (apiKey: string, symbol: string, dataHandler: numbe
       }
     }
   }
+  console.log(`Making API call with key ${apiKey}`);
   axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${symbol}&interval=1min&apikey=${apiKey}`).then(handler)
 }
 
-export const latestClose = (handler: number => void) => (response: any) => {
+export const latestClose = (handler: number => void) => (response: {data: any}) => {
   const timeSeries = Object.entries(response.data['Time Series (1min)']);
   const latestEntry = timeSeries[timeSeries.length - 1];
   const latestValue: any = latestEntry[1];
