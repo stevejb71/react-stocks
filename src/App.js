@@ -18,7 +18,7 @@ class App extends Component<{}, AppState> {
     return (
       <div>
         <div>
-          <ApiKey value=""/>
+          <ApiKey value={this.state.apiKey}/>
         </div>
         <div className="Stocks">
           <Stock symbol="0002.HK" name="CLP"/>
