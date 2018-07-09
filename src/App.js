@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import { getTimeSeries, latestClose } from  './Alphavantage';
+import { getTimeSeries, latestClose, defaultResponseHandler } from  './Alphavantage';
 import { TextBox } from './TextBox';
+import { axiosGet } from './AxiosWrapper';
 const { Map } = require('immutable');
 
 type AppState = {
@@ -23,12 +24,14 @@ class App extends Component<{}, AppState> {
     const clpHandler = latestClose(closePrice => {
       this.setState({prices: this.state.prices.set("0002.HK", closePrice)})
     });
-    getTimeSeries(value, "MSFT", clpHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0002.HK", 0)})});
+    const clpResponseHandler = defaultResponseHandler(clpHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0002.HK", 0)})});
+    getTimeSeries(axiosGet, value, "MSFT", clpResponseHandler);
 
     const hsbcHandler = latestClose(closePrice => {
       this.setState({prices: this.state.prices.set("0005.HK", closePrice)})
     });
-    getTimeSeries(value, "MSFT", hsbcHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0005.HK", 0)})});
+    const hsbcResponseHandler = defaultResponseHandler(hsbcHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0005.HK", 0)})});
+    getTimeSeries(axiosGet, value, "MSFT", hsbcResponseHandler);
   }
 
   render() {
