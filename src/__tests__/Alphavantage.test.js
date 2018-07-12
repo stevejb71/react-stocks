@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { latestClose, defaultResponseHandler } from '../Alphavantage';
+import { latestClose, defaultResponseHandler, getTimeSeries } from '../Alphavantage';
 const { Map } = require('immutable');
 
 const ignore: any = undefined
@@ -38,7 +38,7 @@ test('defaultResponseHandler calls errorHandler with corrupt warning if response
   defaultResponseHandler(ignore, (s, t) => {status = s; text = t;}) (response);
 
   expect(status).toEqual(200);
-  expect(text).toEqual("Corrupt response");
+  expect(text).toEqual("No data");
 });
 
 test('defaultResponseHandler calls errorHandler with corrupt warning if response data is missing the time series', () => {
@@ -49,7 +49,7 @@ test('defaultResponseHandler calls errorHandler with corrupt warning if response
   defaultResponseHandler(ignore, (s, t) => {status = s; text = t;}) (response);
 
   expect(status).toEqual(200);
-  expect(text).toEqual("Corrupt response");
+  expect(text).toEqual("No time series");
 });
 
 test('defaultResponseHandler calls dataHandler if response is ok', () => {
@@ -60,3 +60,12 @@ test('defaultResponseHandler calls dataHandler if response is ok', () => {
 
   expect(dataHandlerInput).toEqual(response);
 });
+
+test('getTimeSeries calls the http caller with a correct alpha vantage URL', () => {
+  let url: string = ""
+  let httpCaller: any = (s, r) => {url = s}
+  
+  getTimeSeries(httpCaller, "apiKey", "symbol", ignore)
+
+  expect(url).toEqual("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=symbol&interval=1min&apikey=apiKey");
+})
