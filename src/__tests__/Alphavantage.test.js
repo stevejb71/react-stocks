@@ -20,45 +20,38 @@ test('latestClose gets the latest close value as a number from the respoonse', (
 });
 
 test('defaultResponseHandler calls errorHandler with status and text if response status is not 200', () => {
-  let status = undefined;
-  let text = undefined;
   const response: any = {status: 300, statusText: "error!"};
   
-  defaultResponseHandler(ignore, (s, t) => {status = s; text = t;}) (response);
+  const [status, text] = defaultResponseHandler(ignore, (s, t) => [s, t]) (response);
 
   expect(status).toEqual(300);
   expect(text).toEqual("error!");
 });
 
 test('defaultResponseHandler calls errorHandler with corrupt warning if response is missing a data attribute', () => {
-  let status = undefined;
-  let text = undefined;
   const response: any = {status: 200};
   
-  defaultResponseHandler(ignore, (s, t) => {status = s; text = t;}) (response);
+  const [status, text] = defaultResponseHandler(ignore, (s, t) => [s, t]) (response);
 
   expect(status).toEqual(200);
   expect(text).toEqual("No data");
 });
 
 test('defaultResponseHandler calls errorHandler with corrupt warning if response data is missing the time series', () => {
-  let status = undefined;
-  let text = undefined;
   const response: any = {status: 200, data: {}};
   
-  defaultResponseHandler(ignore, (s, t) => {status = s; text = t;}) (response);
+  const [status, text] = defaultResponseHandler(ignore, (s, t) => [s, t]) (response);
 
   expect(status).toEqual(200);
   expect(text).toEqual("No time series");
 });
 
 test('defaultResponseHandler calls dataHandler if response is ok', () => {
-  let dataHandlerInput = undefined;
   const response: any = {status: 200, data: {"Time Series (1min)": []}};
   
-  defaultResponseHandler(r => {dataHandlerInput = r;}, ignore) (response);
+  const result = defaultResponseHandler(r => r, ignore) (response);
 
-  expect(dataHandlerInput).toEqual(response);
+  expect(result).toEqual(response);
 });
 
 test('getTimeSeries calls the http caller with a correct alpha vantage URL', () => {
