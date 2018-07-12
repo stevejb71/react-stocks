@@ -21,17 +21,16 @@ class App extends Component<{}, AppState> {
   onApiKeyChange = (value: string) => {
     this.setState({apiKey: value});
 
-    const clpHandler = latestClose(closePrice => {
-      this.setState({prices: this.state.prices.set("0002.HK", closePrice)})
-    });
-    const clpResponseHandler = defaultResponseHandler(clpHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0002.HK", 0)})});
-    getTimeSeries(axiosGet, value, "MSFT", clpResponseHandler);
+    const fetchStock = (symbol) => {
+      const handler = latestClose(closePrice => {
+        this.setState({prices: this.state.prices.set(symbol, closePrice)})
+      });
+      const responseHandler = defaultResponseHandler(handler, (s, msg) => {this.setState({prices: this.state.prices.set(symbol, 0)})});
+      getTimeSeries(axiosGet, value, symbol, responseHandler);
+    }
 
-    const hsbcHandler = latestClose(closePrice => {
-      this.setState({prices: this.state.prices.set("0005.HK", closePrice)})
-    });
-    const hsbcResponseHandler = defaultResponseHandler(hsbcHandler, (s, msg) => {this.setState({prices: this.state.prices.set("0005.HK", 0)})});
-    getTimeSeries(axiosGet, value, "MSFT", hsbcResponseHandler);
+    fetchStock("MSFT");
+    fetchStock("GOOGL");
   }
 
   render() {
@@ -41,8 +40,8 @@ class App extends Component<{}, AppState> {
           <TextBox value={this.state.apiKey} onChange={this.onApiKeyChange}/>
         </div>
         <div className="Stocks">
-          <Stock symbol="0002.HK" name="CLP" price={this.state.prices.get("0002.HK")}/>
-          <Stock symbol="0005.HK" name="HSBC" price={this.state.prices.get("0005.HK")}/>
+          <Stock symbol="MSFT" name="MSFT" price={this.state.prices.get("MSFT")}/>
+          <Stock symbol="GOOGL" name="GOOGLE" price={this.state.prices.get("GOOGL")}/>
         </div>
       </div>
     );
