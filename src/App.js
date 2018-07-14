@@ -5,6 +5,7 @@ import './App.css';
 import { getTimeSeries, latestClose, defaultResponseHandler } from  './Alphavantage';
 import { TextBox } from './TextBox';
 import { axiosGet } from './AxiosWrapper';
+import { Stock } from './Stock';
 const { Map } = require('immutable');
 
 type AppState = {
@@ -43,24 +44,6 @@ class App extends Component<{}, AppState> {
           <Stock symbol="MSFT" name="MSFT" price={this.state.prices.get("MSFT")}/>
           <Stock symbol="GOOGL" name="GOOGLE" price={this.state.prices.get("GOOGL")}/>
         </div>
-      </div>
-    );
-  }
-}
-
-type StockProps = {
-  symbol: string,
-  name: string,
-  price: number,
-}
-
-class Stock extends Component<StockProps> {
-  render() {
-    return (
-      <div className="StockRow">
-        <div className="StockCell">{this.props.symbol}</div>
-        <div className="StockCell">{this.props.name}</div>
-        <div className="StockCell">{this.props.price}</div>
       </div>
     );
   }
