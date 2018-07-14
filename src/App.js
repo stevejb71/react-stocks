@@ -7,6 +7,7 @@ import { TextBox } from './TextBox';
 import { axiosGet } from './AxiosWrapper';
 import type { StockProps } from './Stock';
 import StockList from './StockList';
+import { updatePrice } from './StockListModule'
 const { List } = require('immutable');
 
 type AppState = {
@@ -36,7 +37,7 @@ export default class App extends Component<{}, AppState> {
     this.setState({apiKey: value});
 
     const fetchStock = (symbol) => {
-      const updateState = (closePrice) => this.setState({stocks: this.updatePrice(symbol, closePrice)});
+      const updateState = (closePrice) => this.setState({stocks: updatePrice(this.state.stocks, symbol, closePrice)});
       const handler = latestClose(updateState);
       const responseHandler = defaultResponseHandler(handler, (s, msg) => updateState(0.0));
       getTimeSeries(axiosGet, value, symbol, responseHandler);
@@ -47,14 +48,6 @@ export default class App extends Component<{}, AppState> {
 
   findStock(symbol: string) {
     return this.state.stocks.find(x => x.symbol === symbol)
-  }
-
-  updatePrice(symbol: string, price: number): List<StockProps> {
-    const stocks = this.state.stocks;
-    const indexToUpdate = stocks.findIndex(s => s.symbol === symbol);
-    const stock = stocks.get(indexToUpdate);
-    const newStock = {symbol: stock.symbol, name: stock.name, price: price};
-    return stocks.set(indexToUpdate, newStock);
   }
 
   render() {
