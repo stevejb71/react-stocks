@@ -5,10 +5,8 @@ import './App.css';
 import { getTimeSeries, latestClose, defaultResponseHandler } from  './Alphavantage';
 import { TextBox } from './TextBox';
 import { axiosGet } from './AxiosWrapper';
-import { Stock } from './Stock';
 import type { StockProps } from './Stock';
 import StockList from './StockList';
-import type { StockListProps } from './StockList';
 const { List } = require('immutable');
 
 type AppState = {
