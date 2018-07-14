@@ -6,32 +6,57 @@ import { getTimeSeries, latestClose, defaultResponseHandler } from  './Alphavant
 import { TextBox } from './TextBox';
 import { axiosGet } from './AxiosWrapper';
 import { Stock } from './Stock';
-const { Map } = require('immutable');
+import type { StockProps } from './Stock';
+import StockList from './StockList';
+import type { StockListProps } from './StockList';
+const { List } = require('immutable');
 
 type AppState = {
   apiKey: string,
-  prices: Map<string, number>,
+  stocks: List<StockProps>,
 }
 
-class App extends Component<{}, AppState> {
+export default class App extends Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
-    this.state = {apiKey: "", prices: Map([["0002.HK", 0.0], ["0005.HK", 0.0]])};
+    const stocks = List([
+      {
+        symbol: "MSFT",
+        name: "Microsoft",
+        price: 0.0,
+      },
+      {
+        symbol: "GOOGL",
+        name: "Google",
+        price: 0.0,
+      },
+    ]);
+    this.state = {apiKey: "", stocks: stocks};
   }
 
   onApiKeyChange = (value: string) => {
     this.setState({apiKey: value});
 
     const fetchStock = (symbol) => {
-      const handler = latestClose(closePrice => {
-        this.setState({prices: this.state.prices.set(symbol, closePrice)})
-      });
-      const responseHandler = defaultResponseHandler(handler, (s, msg) => {this.setState({prices: this.state.prices.set(symbol, 0)})});
+      const updateState = (closePrice) => this.setState({stocks: this.updatePrice(symbol, closePrice)});
+      const handler = latestClose(updateState);
+      const responseHandler = defaultResponseHandler(handler, (s, msg) => updateState(0.0));
       getTimeSeries(axiosGet, value, symbol, responseHandler);
     }
 
-    fetchStock("MSFT");
-    fetchStock("GOOGL");
+    this.state.stocks.map(s => s.symbol).forEach(fetchStock);
+  }
+
+  findStock(symbol: string) {
+    return this.state.stocks.find(x => x.symbol === symbol)
+  }
+
+  updatePrice(symbol: string, price: number): List<StockProps> {
+    const stocks = this.state.stocks;
+    const indexToUpdate = stocks.findIndex(s => s.symbol === symbol);
+    const stock = stocks.get(indexToUpdate);
+    const newStock = {symbol: stock.symbol, name: stock.name, price: price};
+    return stocks.set(indexToUpdate, newStock);
   }
 
   render() {
@@ -40,13 +65,10 @@ class App extends Component<{}, AppState> {
         <div>
           <TextBox value={this.state.apiKey} onChange={this.onApiKeyChange}/>
         </div>
-        <div className="Stocks">
-          <Stock symbol="MSFT" name="MSFT" price={this.state.prices.get("MSFT")}/>
-          <Stock symbol="GOOGL" name="GOOGLE" price={this.state.prices.get("GOOGL")}/>
+        <div className="StockList">
+          <StockList stocks={this.state.stocks}/>
         </div>
       </div>
     );
   }
 }
-
-export default App;
