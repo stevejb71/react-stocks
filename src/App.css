@@ -16,6 +16,13 @@
   padding: 2px;
 }
 
+.AddStockRow {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #3136F3;
+  padding: 2px;
+}
+
 .StockCell {
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);

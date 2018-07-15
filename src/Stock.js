@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 export type StockProps = {
   +symbol: string,
   +name: string,
-  +price: number,
+  +price: ?number,
 }
 
 export class Stock extends Component<StockProps> {

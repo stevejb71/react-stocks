@@ -2,20 +2,24 @@
 
 import React, { Component } from 'react';
 
-export class TextBox extends Component<{value: string, onChange: string => void}> { 
-  constructor(props: {value: string, onChange: string => void}) {
+type TextBoxProps = {
+  id: string,
+  value: string,
+  onChange: string => void
+};
+
+export default class TextBox extends Component<TextBoxProps> { 
+  constructor(props: TextBoxProps) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
   render() {
-    return (
-      <input type="text" value={this.props.value} onChange={this.handleChange}/>
-    )
+    return (<input id={this.props.id} type="text" value={this.props.value} onChange={this.onChange}/>);
   }
 
-  handleChange = (event: {target: {value: string}}) => {
+  onChange = (event: {target: {value: string}}) => {
     this.props.onChange(event.target.value);
   }
-}
+};
 

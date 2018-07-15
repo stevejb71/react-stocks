@@ -3,7 +3,7 @@
 import type { StockProps } from './Stock';
 const { List } = require('immutable');
 
-export function updatePrice(stocks: List<StockProps>, symbol: string, price: number): List<StockProps> {
+export function updatePrice(stocks: List<StockProps>, symbol: string, price: ?number): List<StockProps> {
   const indexToUpdate = stocks.findIndex(s => s.symbol === symbol);
   if(indexToUpdate !== -1) {
     const stock = stocks.get(indexToUpdate);
