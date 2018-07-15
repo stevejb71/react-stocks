@@ -6,7 +6,7 @@ import type { StockProps } from './Stock';
 const { List } = require('immutable');
 
 export type StockListProps = {
-  stocks: List<StockProps>
+  +stocks: List<StockProps>
 }
 
 export default class StockList extends Component<StockListProps> {
