@@ -59,6 +59,10 @@ export default class App extends Component<{}, AppState> {
     this.setState({addStock: null, stocks: this.state.stocks.push({symbol: symbol, name: name, price: null})});
   }
 
+  removeStock = (symbol: string) => {
+    this.setState({stocks: this.state.stocks.filter(x => x.symbol !== symbol)});
+  }
+
   render() {
     return (
       <div id="App">
@@ -67,7 +71,7 @@ export default class App extends Component<{}, AppState> {
           <button type="button" onClick={this.onAdd}>Add</button>
         </div>
         <div className="StockList">
-          <StockList stocks={this.state.stocks}/>
+          <StockList stocks={this.state.stocks} removeStock={this.removeStock}/>
         </div>
         {this.state.addStock != null ? <AddStock onClick={this.addStock}/> : <p/>}
       </div>

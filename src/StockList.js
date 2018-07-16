@@ -6,7 +6,8 @@ import type { StockProps } from './Stock';
 const { List } = require('immutable');
 
 export type StockListProps = {
-  +stocks: List<StockProps>
+  +stocks: List<StockProps>,
+  +removeStock: string => void
 }
 
 export default class StockList extends Component<StockListProps> {
@@ -18,5 +19,7 @@ export default class StockList extends Component<StockListProps> {
     );
   }
 
-  renderStock = (s: StockProps) => (<Stock key={s.symbol} symbol={s.symbol} name={s.name} price={s.price}/>);
+  renderStock = (s: StockProps) => (
+    <Stock key={s.symbol} symbol={s.symbol} name={s.name} price={s.price} onRemove={this.props.removeStock}/>
+  );
 }
