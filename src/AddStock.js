@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 import React, { Component } from 'react';
 import SelectionTextBox from './SelectionTextBox';
@@ -42,7 +42,7 @@ export class AddStock extends Component<AddStockProps, AddStockState> {
       <div className="AddStockRow">
         <SelectionTextBox id="addSymbol" value={this.state.symbol} onChange={this.onSymbolChange} selection={FTSE100Symbols}/>
         <SelectionTextBox id="addName" value={this.state.name} onChange={this.onNameChange} selection={FTSE100Names}/>
-        <button type="button" onClick={(e: any) => this.props.onClick(this.state.symbol, this.state.name)}>Done</button>
+        <button type="button" onClick={(e: {}) => this.props.onClick(this.state.symbol, this.state.name)}>Done</button>
       </div>
     );
   }

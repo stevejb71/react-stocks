@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 import type { StockProps } from './Stock';
 const { List } = require('immutable');
