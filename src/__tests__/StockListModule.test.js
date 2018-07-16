@@ -4,7 +4,7 @@ import type { StockProps } from '../Stock';
 import { updatePrice } from '../StockListModule';
 const { List } = require('immutable');
 
-const stocks = List([
+const stocks: any = List([
   {symbol: "sym1", name: "", price: 1.0},
   {symbol: "sym2", name: "", price: 2.0},
   {symbol: "sym3", name: "", price: 3.0},

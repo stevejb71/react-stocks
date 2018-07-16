@@ -21,14 +21,18 @@ type AppState = {
 export default class App extends Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
-    const stocks = List([
+    const stocks: List<StockProps> = List([
       {
         symbol: "MSFT",
         name: "Microsoft",
+        price: null,
+        onRemove: x => {},
       },
       {
         symbol: "GOOGL",
         name: "Google",
+        price: null,
+        onRemove: x => {},
       },
     ]);
     this.state = {apiKey: "", stocks: stocks, addStock: null};
@@ -56,7 +60,7 @@ export default class App extends Component<{}, AppState> {
   }
 
   addStock = (symbol: string, name: string) => {
-    this.setState({addStock: null, stocks: this.state.stocks.push({symbol: symbol, name: name, price: null})});
+    this.setState({addStock: null, stocks: this.state.stocks.push({symbol: symbol, name: name, price: null, onRemove: this.removeStock})});
   }
 
   removeStock = (symbol: string) => {

@@ -1,5 +1,4 @@
 [ignore]
-.*/immutable\.js\.flow
 
 [include]
 

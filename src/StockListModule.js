@@ -7,8 +7,12 @@ export function updatePrice(stocks: List<StockProps>, symbol: string, price: ?nu
   const indexToUpdate = stocks.findIndex(s => s.symbol === symbol);
   if(indexToUpdate !== -1) {
     const stock = stocks.get(indexToUpdate);
-    const newStock = {symbol: stock.symbol, name: stock.name, price: price};
-    return stocks.set(indexToUpdate, newStock);
+    if(stock != null) {
+      const newStock = {symbol: stock.symbol, name: stock.name, price: price, onRemove: stock.onRemove};
+      return stocks.set(indexToUpdate, newStock);
+    } else {
+      return stocks;  
+    }
   } else {
     return stocks;
   }
